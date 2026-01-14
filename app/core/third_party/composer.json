@@ -1,0 +1,11 @@
+{
+    "require": {
+        "phpmailer/phpmailer": "^6.5",
+        "firebase/php-jwt": "^6.0",
+        "gumlet/php-image-resize": "^2.0",
+        "symfony/yaml": "^5.4",
+        "curl/curl": "^2.3",
+        "ramsey/uuid": "^4.2",
+        "smarty/smarty": "^4.1"
+    }
+}

@@ -7,3 +7,4 @@ app/.keys/
 *.sql
 app/resources/insomnia.json
 app/templates/views_c/
+app/core/third_party/vendor/

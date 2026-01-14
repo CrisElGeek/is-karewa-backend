@@ -1,0 +1,124 @@
+SUCCESS:
+  message: Success
+  code: SUCCESS
+  http_code: 200
+UPDATED:
+  message: Entry updated
+  code: APP_UPDATE_SUCCESS
+  http_code: 200
+CREATED:
+  message: Entry added
+  code: APP_CREATE_SUCCESS
+  http_code: 201
+NOCHANGE:
+  message: No changes made
+  code: NOCHANGE
+  http_code: 202
+DELETED:
+  message: Entry deleted correctly
+  code: DELETED
+  http_code: 202
+909000:
+  message: Unknown internal server error
+  code: APP_UNKNOWN_INTERNAL_ERROR
+  http_code: 500
+900000:
+  message: Invalid request method
+  code: APP_INVALID_REQUEST_METHOD
+  http_code: 405
+900001:
+  message: No module found
+  code: APP_MODULE_NOT_FOUND
+  http_code: 404
+900002:
+  message: Error retrieving payload on post, put or fetch request
+  code: API_ERROR_RETRIEVING_PAYLOAD
+  http_code: 500
+901000:
+  message: Error while decoding encoding authentication token
+  code: APP_AUTH_INTERNAL_ERROR
+  http_code: 500
+901001:
+  message: Session expired
+  code: APP_AUTH_SESSION_EXPIRED
+  http_code: 403
+901002:
+  message: JWT unexpected value
+  code: APP_AUTH_UNEXPECTED_VALUE
+  http_code: 401
+901003:
+  message: JWT unexpected signature
+  code: APP_AUTH_IVALID_SIGNATURE
+  http_code: 401
+901004:
+  message: Login failed
+  code: APP_AUTH_FAILED
+  http_code: 401
+901005:
+  message: Invalid recovery code
+  code: APP_AUTH_INVALID_CODE
+  http_code: 403
+901006:
+  message: Expired validation code
+  code: APP_AUTH_EXPIRED_CODE
+  http_code: 403
+901007:
+  message: Public and / or private files not found
+  code: APP_AUTH_NO_KEYS
+  http_code: 500
+400000:
+  message: Error validating payload data
+  code: APP_PAYLOAD_VALIDATION
+  http_code: 400
+400001:
+  message: No payload received
+  code: API_NO_PAYLOAD_RECEIVED
+  http_code: 406
+400002:
+  message: No id provided
+  code: API_NO_ENTRY_ID_PROVIDED
+  http_code: 406
+404000:
+  message: No results found
+  code: APP_RESULTS_NOT_FOUND
+  http_code: 404
+902000:
+  mesage: Error processing database query
+  code: APP_DATABASE_INTERNAL_ERROR
+  http_code: 500
+902001:
+  message: No fields to be updated
+  code: APP_DATABASE_UPDATE_NO_FIELDS
+  http_code: 500
+902002:
+  message: Entry asociated to another entry or table, you should remove that first
+  code: APP_ENTRY_RELATIONSHIP
+  http_code: 409
+903000:
+  message: Error sending email message
+  code: APP_MAILER_INTERNAL_ERROR
+  http_code: 500
+904000:
+  message: Error adding new user, please contat us
+  code: APP_REGISTRATION_FAILED
+  http_code: 500
+905000:
+  message: Third party provider error
+  code: APP_THIRD_PARTY_ERROR
+  http_code: 500
+906000:
+  message: File exceeds max size allowed
+  code: APP_UPLOAD_MAX_SIZE
+  http_code: 413
+906001:
+  message: File can not be uploaded
+  code: APP_UPLOAD_NOT_COMPLETED
+  http_code: 500
+906002:
+  message: Invalid file format
+  code: APP_UPLOAD_INVALID_FORMAT
+  http_code: 415
+906003:
+  message: Directory could not be created
+  code: APP_FOLDER_NOT_CREATED
+  http_code: 500
