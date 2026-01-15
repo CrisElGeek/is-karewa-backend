@@ -10,7 +10,7 @@ class ApiConfiguration {
 		$config = new stdClass();
 		$results = DBGet::Get($params, 'list');
 		foreach($results as $entry) {
-			$config->{$entry['slug']} = $entry['data'];
+			$config->{$entry['slug']} = $entry['value'];
 		}
 		$_apiConfig = $config;
 	}

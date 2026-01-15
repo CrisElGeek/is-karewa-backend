@@ -38,9 +38,10 @@ define('FRONTEND_LOG_FILE', $app_path . $_config->log->path . $_config->log->fro
  * Guarda los errores en el archivo definido para este fin
  */
 ini_set('log_errors', 'On');
+ini_set('html_errors', 'On');
 ini_set('display_errors', $_config->development);
 ini_set('display_startup_errors', $_config->development);
-error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
 ini_set('error_log', ERROR_LOG_FILE);
 ini_set('session.use_cookies', 0);
 date_default_timezone_set($_config->timezone);

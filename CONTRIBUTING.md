@@ -11,3 +11,12 @@ git submodule add git@gitlab.com:criselgeek/chavo-digital-api-rest-core.git app/
 sh ./setup_project.sh
 ```
 - __Editar archivo de configuración:__ En el nuevo archivo config.yml ajustamos los parametros para que coincidan con nuestra configuracion. El archivo se puede ir modificando y agregando nuevos parámetros en el futuro
+
+### Crear claves de seguridad RS256
+
+Dentro del directorio `app/.keys` ejecutamos los siguientes comandos para crear las claves privadas y publicas necesarias para firmar los tokens JWT usando RS256
+```bash
+ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
+# Don't add passphrase
+openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
+```

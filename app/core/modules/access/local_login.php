@@ -58,10 +58,15 @@ class AppAccess extends BaseModel {
 			],
 		];
 
-		$user_data = DBGet::Get($params);
+    try {
+      $user_data = DBGet::Get($params);
+    } catch(\AppException $e) {
+      ApiResponse::Set(902000);
+    }
 
-		$db_pass = $user_data['password'];
-		if ($user_data && password_verify($this->payload->password, $db_pass)) {
+    $db_pass = $user_data['password'];
+    
+    if ($user_data && password_verify($this->payload->password, (string) $db_pass)) {
 			$login_data = [
 				'id'         => $user_data['id'],
 				'first_name' => $user_data['first_name'],
@@ -165,8 +170,13 @@ class AppAccess extends BaseModel {
 				['email', $this->payload->email, '='],
 				['status_id', 1, '='],
 			],
-		];
-		$data = DBGet::Get($get_data);
+    ];
+    $data = NULL;
+    try {
+      $data = DBGet::Get($get_data);
+}   catch(\AppException $e) {
+      ApiResponse::Set(902000);
+    }
 		if(!$data) {
 			ApiResponse::Set(404000);
 		}

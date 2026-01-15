@@ -5,16 +5,16 @@ use PDO;
 
 abstract class DBGet {
 
-  public static function Get(array $params, string $action = NULL) {
+  public static function Get(array $params, ?string $action = NULL ) : array|null {
     $limit_inf = 1;
     $table        = is_string($params['table']) ? $params['table'] : null;
-    $_filters     = is_array($params['filters']) ? $params['filters'] : [];
-    $_fields      = is_array($params['fields']) ? $params['fields'] : [];
-    $_joins       = is_array($params['joins']) ? $params['joins'] : [];
-    $_page        = is_numeric($params['page']) ? (int) $params['page'] : 1;
-    $_max_results = is_numeric($params['max_results']) ? (int) $params['max_results'] : 0;
-    $_order_by    = is_array($params['order']) ? $params['order'] : [];
-    $_group_by    = is_array($params['group_by']) ? $params['group_by'] : NULL;
+    $_filters     = (array_key_exists('filter', $params) && is_array($params['filters'])) ? $params['filters'] : [];
+    $_fields      = (array_key_exists('fields', $params) && is_array($params['fields'])) ? $params['fields'] : [];
+    $_joins       = (array_key_exists('joins', $params) && is_array($params['joins'])) ? $params['joins'] : [];
+    $_page        = (array_key_exists('page', $params) && is_numeric($params['page'])) ? (int) $params['page'] : 1;
+    $_max_results = (array_key_exists('max_results', $params) && is_numeric($params['max_results'])) ? (int) $params['max_results'] : 0;
+    $_order_by    = (array_key_exists('order', $params) && is_array($params['order'])) ? $params['order'] : [];
+    $_group_by    = (array_key_exists('group_by', $params) && is_array($params['group_by'])) ? $params['group_by'] : NULL;
     $_action      = $action;
 
     $joins = self::get_joins($_joins);
@@ -39,7 +39,7 @@ abstract class DBGet {
       $qry_str = 'SELECT ' . $fields . ' FROM ' . $table . ' ' . $joins . $where . 'LIMIT 1';
       break;
 		}
-    return self::get_bind_data($_filters, $qry_str, $_max_results, $_action, $limit_inf);
+    return self::get_bind_data($_filters, $qry_str, $_max_results, $limit_inf, $_action);
   }
 
   private static function get_joins(array $joins) {
@@ -171,7 +171,7 @@ abstract class DBGet {
     }
   }
 
-  private static function get_limits(int $max_results, int $page) {
+  private static function get_limits(int $max_results, int $page) :array {
     $limit_inf = 1;
     $limits    = '';
 
@@ -199,7 +199,7 @@ abstract class DBGet {
     return $order;
   }
 
-  private static function get_bind_data(array $filters, string $qry_str, int $max_results, string $action = NULL, int $limit_inf) {
+  private static function get_bind_data(array $filters, string $qry_str, int $max_results, int $limit_inf, ?string $action = NULL) :array|null {
     $dbconn     = DB::connection();
     $db_results = [];
     $pdoparam   = PDO::PARAM_STR;
@@ -253,8 +253,11 @@ abstract class DBGet {
 			}
 		} catch(\Exception $e) {
 			throw new \AppException($e->getMessage(), 902000);
-		}
-    return count($db_results) > 0 ? $db_results : NULL;
+    }
+    if ($db_results === false || $db_results === NULL || empty($db_results) || $db_results == [] || count( (array) $db_results) == 0) {
+      return NULL;
+    }
+    return $db_results;
   }
 }
 ?>

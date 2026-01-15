@@ -7,5 +7,8 @@
         "curl/curl": "^2.3",
         "ramsey/uuid": "^4.2",
         "smarty/smarty": "^4.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.5"
     }
 }
