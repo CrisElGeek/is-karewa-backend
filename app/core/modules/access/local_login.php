@@ -144,6 +144,15 @@ class AppAccess extends BaseModel {
 		ApiResponse::Set('SUCCESS');
   }
   /**
+   * destruir la sesión actual del usuario
+  */
+  // TODO: Pendiente de implementar el manejo de tokens para invalidar el token actual
+  public function Logout() {
+    ApiResponse::Set('SUCCESS', [
+      'data' => 'Logged out successfully'
+    ]);
+  }
+  /**
    * realizar la peticion de cambio de contraseña validado por medio del código
    * de 6 dígitos que se envio al correo electrónico y el mismo correo electrónico
    */

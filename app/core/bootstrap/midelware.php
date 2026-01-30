@@ -8,7 +8,7 @@ use App\Model\DBUpdate;
 use App\Helpers\ApiResponse;
 
 trait Crud {
-	public function show() {
+  public function show() {
     return parent::get();
   }
 
@@ -17,12 +17,12 @@ trait Crud {
   }
 
   public function store() {
-		return parent::post();
-	}
+    return parent::post();
+  }
 
   public function update() {
-		return parent::put();
-	}
+    return parent::put();
+  }
 
   public function destroy() {
     return parent::delete();
@@ -31,27 +31,34 @@ trait Crud {
 
 class BaseModel {
   protected $get_fields;
-	protected $search_fields;
-	protected $embeded = [];
-	protected $availableFields = [];
-	protected $entryId = NULL;
-	protected array $table_assoc = [];
-	protected $queryFields = NULL;
-	protected Object $payload;
-	protected array $methodOptions = [
-		'end' => true
-	];
+  protected $search_fields;
+  protected $embeded = [];
+  protected $availableFields = [];
+  protected $entryId = NULL;
+  protected array $table_assoc = [];
+  protected $queryFields = NULL;
+  protected Object $payload;
+  protected array $methodOptions = [
+    'end' => true
+  ];
+  protected $get_params = [
+    'table'   => null,
+    'filters' => [],
+    'joins'   => [],
+    'search'  => [],
+  ];
+  protected $rules = [];
 
-	function __construct() {
-		global $_payload;
-		if($_payload) {
-			$this->payload = $_payload;
-		}
-	}
+  function __construct() {
+    global $_payload;
+    if($_payload) {
+      $this->payload = $_payload;
+    }
+  }
 
-	protected function init() {
-		$params = (object) $this->get_params;
-		$this->controllerFields();
+  protected function init() {
+    $params = (object) $this->get_params;
+    $this->controllerFields();
     // Pagina actual de la páginación
     $get_page = $_GET['page'] > 0 ? (int) $_GET['page'] : 1;
     // Maxima cantidad de resultados de busqueda
@@ -72,13 +79,13 @@ class BaseModel {
     }
     // Filtros de busqueda
     $get_filters = $this->getParamsFilters($params->search);
-		$this->entryId = trim(strip_tags((string) $_GET['id']));
-		if (!empty($params->filters)) {
-			foreach ($params->filters as $key => $filter) {
-				if($key == 'id') {
-					$this->entryId = $filter[1];
-				}
-				$get_filters[$key] = $filter;
+    $this->entryId = trim(strip_tags((string) $_GET['id']));
+    if (!empty($params->filters)) {
+      foreach ($params->filters as $key => $filter) {
+        if($key == 'id') {
+          $this->entryId = $filter[1];
+        }
+        $get_filters[$key] = $filter;
       }
     }
     // Joins solicitados desde el modulo, no se pueden solicitar desde el API
@@ -87,7 +94,7 @@ class BaseModel {
       foreach ($params->joins as $key => $join) {
         array_push($get_joins, $join);
       }
-		}
+    }
     return [
       'table'       => $params->table,
       'fields'      => $get_fields,
@@ -166,14 +173,14 @@ class BaseModel {
         if (array_key_exists($value, $this->availableFields) && $this->availableFields[$value]['listed'] === true && ($this->availableFields[$value]['roles'] === false || (defined('USER_ROLE') && in_array(USER_ROLE, $this->availableFields[$value]['roles'])))) {
           $fields[] = $this->availableFields[$value]['field'] . ' ' . $value;
         }
-			}
+      }
     } else {
       foreach ($this->availableFields as $key => $value) {
         if (!empty($value['field']) && $value['listed'] === true && ($value['roles'] === false || (defined('USER_ROLE') && in_array(USER_ROLE, $value['roles'])))) {
           $fields[] = $value['field'] . ' ' . $key;
         }
       }
-		}
+    }
     return $fields;
   }
 
@@ -181,7 +188,7 @@ class BaseModel {
     $sort_params = strip_tags((string ) $_GET['sort']);
     $sort_params = explode(',', $sort_params);
 
-		$order_by = [];
+    $order_by = [];
     if (isset($_GET['sort']) && !empty($_GET['sort']) && count($sort_params) > 0) {
       if (in_array('rand', $sort_params)) {
         $order_by[] = ['RAND()', ''];
@@ -231,16 +238,16 @@ class BaseModel {
         $v = explode(':', $v);
         if (array_key_exists($v[0], $operators)) {
           $filters[$key] = [$value['field'], $v[1], $operators[$v[0]]];
-				} elseif(!isset($v[1]) && isset($v[0])) {
+        } elseif(!isset($v[1]) && isset($v[0])) {
           $filters[$key] = [$value['field'], $v[0], $operators['eq']];
-				}
+        }
       }
-		}
+    }
 
     if (isset($_GET['search']) && !empty($_GET['search']) && $search_fields) {
       $search  = $this->getSearch($search_fields);
       $filters = array_merge($filters, $search);
-		}
+    }
     return $filters;
   }
 
@@ -264,151 +271,153 @@ class BaseModel {
     }
   }
 
-	public function get() {
-		$get_params = $this->init();
-		$result_type = isset($_GET['id']) ? NULL : 'list';
-		$data = [
-			'data' => []
-		];
-		try {
-			$data['data'] = DBGet::Get($get_params, $result_type);
-		} catch(\AppException $e) {
-			ApiResponse::Set($e->errorCode());
-		}
-		if (!$data['data']) {
-			if(!$this->methodOptions['end']) {
-				throw new \AppException('No results found', 404000);
-			} else {
-				ApiResponse::Set(404000);
-			}
-		} else {
+  public function get() {
+    $get_params = $this->init();
+    $result_type = isset($_GET['id']) ? NULL : 'list';
+    $data = [
+      'data' => []
+    ];
+    try {
+      $data['data'] = DBGet::Get($get_params, $result_type);
+    } catch(\AppException $e) {
+      ApiResponse::Set($e->errorCode());
+    }
+    if (!$data['data']) {
+      if(!$this->methodOptions['end']) {
+        throw new \AppException('No results found', 404000);
+      } else {
+        ApiResponse::Set(404000);
+      }
+    } else {
       $this->embeded = $this->getEmbed();
       if (in_array('pagination', $this->embeded)) {
         $pagination_params = [
           'table'   => $get_params['table'],
           'filters' => $get_params['filters'],
           'joins'   => $get_params['joins'],
-				];
-				if(count($get_params['group_by']) > 0) {
-					$pagination_params['group_by'] = $get_params['group_by'];
-					$result = DBGet::Get($pagination_params, 'list');
-					$count = NULL;
-					if($result) {
-						$count = [
-							'results' => count($result)
-						];
-					}
-				} else {
-					$count = DBGet::Get($pagination_params, 'count');
-				}
-				if($count) {
-        	$pages = ceil($count['results'] / $get_params['max_results']);
-        	$data['pagination'] = [
-          	'pages'        => (int) $pages,
-          	'results'      => (int) $count['results'],
-          	'current_page' => (int) $get_params['page'],
-					];
-				}
+        ];
+        if(count($get_params['group_by']) > 0) {
+          $pagination_params['group_by'] = $get_params['group_by'];
+          $result = DBGet::Get($pagination_params, 'list');
+          $count = NULL;
+          if($result) {
+            $count = [
+              'results' => count($result)
+            ];
+          }
+        } else {
+          $count = DBGet::Get($pagination_params, 'count');
+        }
+        if($count) {
+          $pages = ceil($count['results'] / $get_params['max_results']);
+          $data['pagination'] = [
+            'pages'        => (int) $pages,
+            'results'      => (int) $count['results'],
+            'current_page' => (int) $get_params['page'],
+          ];
+        }
       }
-		}
-		if($this->methodOptions['end'] != True) {
-    	return $data;
-		} else {
-			ApiResponse::Set('SUCCESS', $data);
-		}
-  }
-
-	public function post() {
-		$get_params = $this->init();
-		$table = preg_replace("/\s\w+?$/i", '', (string) $get_params['table']);
-		$fields = $this->queryFields();
-		$validation = FieldsValidator::Validation($fields, $this->rules);
-		if ($validation) {
-			ApiResponse::Set(400000, [
-				'errors'	=> $validation
-			]);
     }
-		if($this->queryFields) {
-			foreach($this->queryFields as $key => $field) {
-				$fields[$key] = $field;
-			}
-		}
-		$f[] = $fields;
-		try {
-      $response = DBStore::Store($table, $f);
-		} catch (\AppException $e) {
-			ApiResponse::Set($e->errorCode());
-		}
-		if($this->methodOptions['end']) {
-			ApiResponse::Set('CREATED', [
-				'data' => [
-					'inserted_id' => $response
-				]
-			]);
-		}
-		return $response;
+    if($this->methodOptions['end'] != True) {
+      return $data;
+    } else {
+      ApiResponse::Set('SUCCESS', $data);
+    }
   }
 
-	public function put() {
-		$get_params = $this->init();
-		$fields = $this->queryFields();
-		$validation = FieldsValidator::Validation($fields, $this->rules, $this->entryId);
-		if ($validation) {
-			ApiResponse::Set(400000, [
-				'errors'	=> $validation
-			]);
-		}
-		if($this->queryFields) {
-			foreach($this->queryFields as $key => $field) {
-				$fields[$key] = $field;
-			}
-		}
-		$f = $fields;
+  public function post() {
+    $get_params = $this->init();
+    $table = preg_replace("/\s\w+?$/i", '', (string) $get_params['table']);
+    $fields = $this->queryFields();
+    $fv = new FieldsValidator();
+    $validation = $fv->Validation($fields, $this->rules);
+    if ($validation) {
+      ApiResponse::Set(400000, [
+        'errors'  => $validation
+      ]);
+    }
+    if($this->queryFields) {
+      foreach($this->queryFields as $key => $field) {
+        $fields[$key] = $field;
+      }
+    }
+    $f[] = $fields;
+    try {
+      $response = DBStore::Store($table, $f);
+    } catch (\AppException $e) {
+      ApiResponse::Set($e->errorCode());
+    }
+    if($this->methodOptions['end']) {
+      ApiResponse::Set('CREATED', [
+        'data' => [
+          'inserted_id' => $response
+        ]
+      ]);
+    }
+    return $response;
+  }
+
+  public function put() {
+    $get_params = $this->init();
+    $fields = $this->queryFields();
+    $fv = new FieldsValidator();
+    $validation = $fv->Validation($fields, $this->rules, $this->entryId);
+    if ($validation) {
+      ApiResponse::Set(400000, [
+        'errors'  => $validation
+      ]);
+    }
+    if($this->queryFields) {
+      foreach($this->queryFields as $key => $field) {
+        $fields[$key] = $field;
+      }
+    }
+    $f = $fields;
     try {
       $rows = DBUpdate::Update($get_params['table'], $f, $get_params['filters'], $get_params['joins']);
     } catch (\AppException $e) {
-			ApiResponse::Set($e->errorCode());
-		}
-		if($this->methodOptions['end']) {
-			$responseType = $rows > 0 ? 'UPDATED' : 'NOCHANGE';
-			ApiResponse::Set($responseType, [
-				'data' => [
-					'rows' => $rows
-				]
-			]);
-		}
-		return $rows;
+      ApiResponse::Set($e->errorCode());
+    }
+    if($this->methodOptions['end']) {
+      $responseType = $rows > 0 ? 'UPDATED' : 'NOCHANGE';
+      ApiResponse::Set($responseType, [
+        'data' => [
+          'rows' => $rows
+        ]
+      ]);
+    }
+    return $rows;
   }
 
-	public function delete() {
-		$get_params = $this->init();
+  public function delete() {
+    $get_params = $this->init();
     try {
       $result = DBDelete::delete($get_params['table'], $get_params['filters'], $this->table_assoc);
     } catch (\AppException $e) {
-			ApiResponse::Set($e->errorCode());
-		}
-		if($this->methodOptions['end']) {
-			$responseType = $result == 0 ? 'NOCHANGE' : 'DELETED';
-			ApiResponse::Set($responseType);
-		}
-		return $result;
+      ApiResponse::Set($e->errorCode());
+    }
+    if($this->methodOptions['end']) {
+      $responseType = $result == 0 ? 'NOCHANGE' : 'DELETED';
+      ApiResponse::Set($responseType);
+    }
+    return $result;
   }
 
-	protected function queryFields() {
+  protected function queryFields() {
     $vars   = [];
-		foreach ($this->availableFields as $key => $field) {
-			$field_exists = array_key_exists($key, (array) $this->payload);
-			if((!$field_exists && $field['optional']) || (REQUEST_TYPE == 'update' && (empty($this->payload->$key) || !$field_exists)) || ($field['roles'] && !in_array(USER_ROLE, $field['roles'])) || !$field['saved'] ) {
-				// No action
-			} else {
+    foreach ($this->availableFields as $key => $field) {
+      $field_exists = array_key_exists($key, (array) $this->payload);
+      if((!$field_exists && $field['optional']) || (REQUEST_TYPE == 'update' && (empty($this->payload->$key) || !$field_exists)) || ($field['roles'] && !in_array(USER_ROLE, $field['roles'])) || !$field['saved'] ) {
+        // No action
+      } else {
         $value = (empty($this->payload->$key) && $field['default']) ? $field['default'] : $this->payload->$key;
         $vars[$key] = [$field['field'], $value];
-			}
-		}
+      }
+    }
     return $vars;
-	}
-	
-	protected function controllerFields() {
+  }
+  
+  protected function controllerFields() {
     /**
      * [$this->available_fields description]
      * @var array
@@ -438,7 +447,7 @@ class BaseModel {
           $response[$name][$key] = $this->moduleFields[$name][$key];
         }
       }
-		}
+    }
     $this->availableFields = $response;
-	}
+  }
 }

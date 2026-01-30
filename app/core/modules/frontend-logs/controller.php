@@ -1,4 +1,6 @@
 <?php
+use App\Helpers\ApiResponse;
+
 class FrontendLogs {
   private $request;
 
@@ -7,7 +9,10 @@ class FrontendLogs {
   }
 
   public function store() {
-		//error_logs();
+    // TODO: Implement frontend log storage logic here
+		ApiResponse::Set('SUCCESS', [
+      'message' => 'Frontend log stored successfully'
+    ]);
   }
 }
 ?>
