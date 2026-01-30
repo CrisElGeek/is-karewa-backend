@@ -4,7 +4,7 @@ En el sistema inicial habian algunos problemas para escalar el proyecto, tambié
 
 ## Tecnologías utilizadas
 - Frontend: Vue.js
-- Backend: PHP (Framework desarrolloado por [Chavo Digital](https://chavodigital.com))
+- Backend: PHP (Framework desarrolloado por uno de nuestros colaboradores)
 - Base de datos: MySQL
 - Servidor web: Apache/Nginx
 - Sistema operativo: Linux (RHEL/CentOS/Almalinux)
@@ -23,7 +23,7 @@ En el sistema inicial habian algunos problemas para escalar el proyecto, tambié
 ## Instalación
 1. Clona el repositorio en tu servidor: 
    ```bash
-   git clone git@github.com:CrisElGeek/is-karewa-backend.git
+   git clone git@github.com:Karewa-Sinaloa/is-karewa-backend.git
    ```
 2. Navega al directorio del proyecto:
    ```bash
@@ -47,6 +47,9 @@ En el sistema inicial habian algunos problemas para escalar el proyecto, tambié
 6. Configura el archivo de configuración `app/config.yml` con los detalles de tu base de datos y otras configuraciones necesarias. Se deja un archivo de ejemplo `app/config.example.yml` que puedes copiar y renombrar a `config.yml` para facilitar la configuración.
 7. Configura tu servidor web (Apache/Nginx) para que apunte al directorio `public` del proyecto.
 
+## Uso
+El sistema esta disponible para su uso libre de quien lo desee implementar. El fin de este proyecto es ayudar a mejorar la transparencia y la rendición de cuentas en las instituciones públicas.
+
 ## Estatus del proyecto
 El proyecto se encuentra en desarrollo activo. Se están implementando nuevas funcionalidades y mejoras continuamente. El proyecto aun se encuentra en fase temprana, por lo que se recomienda utilizarlo con precaución en entornos de producción.
 
@@ -57,7 +60,9 @@ Las contribuciones son bienvenidas. Si deseas contribuir al proyecto, por favor 
 Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
 
 ## Contacto
-Para cualquier consulta o soporte, por favor contacta a [Chavo Digital](https://chavodigital.com).
+Para cualquier consulta o soporte, por favor contacta a [Karewa Sinaloa](dev@karewa.org.mx).
+
+
 
 
 
