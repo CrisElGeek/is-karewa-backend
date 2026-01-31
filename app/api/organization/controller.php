@@ -1,16 +1,10 @@
 <?php
 use App\Model\BaseModel;
-use App\Validation\FieldsValidator;
 use App\Model\Crud;
 
 class organizationComponent extends BaseModel {
 
-	use Crud {
-		store as private storetrait;
-		update as private updatetrait;
-		index as private indextrait;
-		show as private showtrait;
-	}
+	use Crud;
 	
 	protected $moduleFields = [
 		'id' => ['field' => 'id', 'default' => 1, 'readonly' => true],
@@ -45,22 +39,6 @@ class organizationComponent extends BaseModel {
 
 	public function __construct() {
 		parent::__construct();
-	}
-
-	public function store() {
-		$this->storetrait();
-	}
-	
-	public function update() {
-		$this->updatetrait();
-	}
-
-	public function index() {
-		$this->indextrait();
-	}
-
-	public function show() {
-		$this->showtrait();
 	}
 
 }
