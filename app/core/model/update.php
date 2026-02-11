@@ -14,7 +14,7 @@ abstract class DBUpdate {
 		$filters = self::put_filters($_filters);
     $join    = self::put_join($_joins);
 
-		$qry_str = 'UPDATE ' . $table . ' ' . $join . 'SET ' . $fields . $filters;
+		$qry_str = 'UPDATE ' . MYSQL_PREFIX . $table . ' ' . $join . 'SET ' . $fields . $filters;
     return self::put_bind_data($_fields, $_filters, $qry_str);
   }
 
