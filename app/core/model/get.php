@@ -6,8 +6,8 @@ use PDO;
 abstract class DBGet {
 
   public static function Get(array $params, ?string $action = NULL ) : array|null {
-    $limit_inf = 1;
-    $table        = is_string($params['table']) ? $params['table'] : null;
+	$limit_inf = 1;
+    $table        = is_string($params['table']) ? MYSQL_PREFIX . $params['table'] : null;
     $_filters     = (array_key_exists('filters', $params) && is_array($params['filters'])) ? $params['filters'] : [];
     $_fields      = (array_key_exists('fields', $params) && is_array($params['fields'])) ? $params['fields'] : [];
     $_joins       = (array_key_exists('joins', $params) && is_array($params['joins'])) ? $params['joins'] : [];

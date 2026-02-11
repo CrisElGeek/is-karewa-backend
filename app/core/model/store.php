@@ -7,7 +7,7 @@ use PDO;
 abstract class DBStore {
   private static $bind_array;
   public static function Store(string $table, array $fields) {
-    $qry_str = self::post_qry($table, $fields);
+    $qry_str = self::post_qry(MYSQL_PREFIX . $table, $fields);
     return self::post_bind_data($qry_str);
   }
 

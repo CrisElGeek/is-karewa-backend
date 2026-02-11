@@ -79,6 +79,7 @@ define('MYSQL_DB', $_config->database->database);
 define('MYSQL_USER', $_config->database->user);
 define('MYSQL_PSWD', $_config->database->password);
 define('MYSQL_PORT', $_config->database->port);
+define('MYSQL_PREFIX', $_config->database->prefix);
 define('MYSQL_CHARSET', $_config->database->charset);
 define('MYSQL_COLLATION', $_config->database->collation);
 /**

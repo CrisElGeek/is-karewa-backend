@@ -10,7 +10,7 @@ abstract class DBDelete {
 
   public static function delete(string $table, array $filter, array $table_assoc = NULL) {
     $filters    = self::delete_filters($filter);
-    $qry_delete = 'DELETE FROM ' . $table . $filters;
+    $qry_delete = 'DELETE FROM ' . MYSQL_PREFIX . $table . $filters;
 
     if ($table_assoc) {
     	self::is_asociated($table_assoc);
